@@ -1,0 +1,31 @@
+Product_ID,Product_Name,Category,Price_INR,Current_Stock,Days_Remaining
+P001,Parle-G Biscuits,Biscuits,10,151,16
+P002,Oreo Original,Biscuits,40,186,13
+P003,Britannia Good Day,Biscuits,30,109,54
+P004,Hide & Seek,Biscuits,35,210,10
+P005,Kurkure Masala Munch,Snacks,20,95,49
+P006,Lays Magic Masala,Snacks,20,121,59
+P007,Haldiram's Aloo Bhujia,Snacks,65,118,60
+P008,Bingo Tedhe Medhe,Snacks,20,227,9
+P009,Kellogg's Corn Flakes,Cereals,210,46,57
+P010,Bagrry's Muesli,Cereals,280,38,31
+P011,Amul Taaza Milk,Dairy,32,268,9
+P012,Amul Butter,Dairy,58,125,35
+P013,Amul Cheese Slices,Dairy,145,124,54
+P014,Mother Dairy Curd,Dairy,45,74,33
+P015,Tropicana Orange Juice,Beverages,120,75,20
+P016,Real Mixed Fruit Juice,Beverages,110,173,14
+P017,Coca-Cola 750ml,Beverages,45,140,15
+P018,Paper Boat Aam Panna,Beverages,35,75,19
+P019,Kissan Tomato Ketchup,Sauces,120,26,43
+P020,Veeba Sandwich Spread,Sauces,140,46,34
+P021,Maggi 2-Minute Noodles,Instant Food,15,113,30
+P022,Yippee Noodles,Instant Food,15,121,43
+P023,Saffola Oats,Breakfast,180,51,60
+P024,Quaker Oats,Breakfast,170,57,41
+P025,Kissan Mixed Fruit Jam,Spreads,150,20,30
+P026,Nutella 350g,Spreads,420,13,60
+P027,Aashirvaad Atta 5kg,Staples,290,87,24
+P028,India Gate Basmati Rice 5kg,Staples,520,97,8
+P029,Tata Salt 1kg,Staples,28,80,18
+P030,Tata Sampann Dal 1kg,Staples,145,90,28
