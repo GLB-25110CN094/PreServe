@@ -1,0 +1,6 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PreServe</title><link rel="stylesheet" href="style.css"></head><body><main><h1 data-i18n="h_title"></h1><div class="card wrap"><table id="tb"></table></div><br><div class="card"><h2 data-i18n="h_add"></h2>
+<div class="f2"><div><label data-i18n="shopName"></label><input id="n"></div><div><label data-i18n="city"></label><input id="c"></div></div><button class="btn" id="ad" data-i18n="save"></button></div></main>
+<script src="app.js"></script><script>
+function render(){tb.innerHTML='<tr><th data-i18n="shopName"></th><th data-i18n="city"></th><th data-i18n="h_code"></th><th></th></tr>'+shops().map(s=>'<tr><td>'+esc(s.name)+'</td><td>'+esc(s.city)+'</td><td>'+s.code+'</td><td>'+(s.id===shopId()?'<span class="badge b-LOW" data-i18n="h_cur"></span>':'<button class="btn sm sec" onclick="use('+s.id+')" data-i18n="h_use"></button>')+'</td></tr>').join('');applyI18n(tb)}
+function use(id){LS.shopId=id;location.reload()}
+if(shell('shops')){render();ad.onclick=async()=>{try{LS.shops=JSON.stringify(await api('/shops',{name:n.value,city:c.value}));location.reload()}catch(x){toast(x.message,1)}}}</script></body></html>

@@ -1,0 +1,8 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PreServe</title><link rel="stylesheet" href="style.css"></head><body><main><h1 data-i18n="m_title"></h1><p class="mut" data-i18n="m_sub"></p><div class="grid g4" id="st"></div><br>
+<div class="card center"><h2 data-i18n="m_public"></h2><div id="qr" style="display:inline-block;background:#fff;padding:10px;border-radius:8px"></div><p class="mut" data-i18n="m_scan"></p><p id="lk"></p><a class="btn" id="op" target="_blank" data-i18n="m_open"></a></div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="app.js"></script><script>
+if(shell('impact'))(async()=>{const m=await api('/impact?shopId='+shopId());const sh=shops().find(s=>s.id===shopId());
+const S=[['m_prods',m.productsSaved],['m_kg',m.kgSaved],['m_val',money(m.valueRecovered)],['m_int',m.interventions],['m_done',m.completed],['a_saved',m.unitsSaved]];
+st.innerHTML=S.map(x=>'<div class="card stat"><b>'+x[1]+'</b><span data-i18n="'+x[0]+'"></span></div>').join('');
+const u=location.origin+'/store.html?code='+sh.code;lk.innerHTML='<a href="'+u+'" target="_blank">'+u+'</a>';op.href=u;
+if(window.QRCode)new QRCode(qr,{text:u,width:180,height:180});applyI18n()})().catch(e=>toast(e.message,1))</script></body></html>

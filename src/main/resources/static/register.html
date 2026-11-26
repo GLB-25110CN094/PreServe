@@ -1,0 +1,6 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PreServe</title><link rel="stylesheet" href="style.css"></head><body><div class="auth"><div class="card"><h1 data-i18n="register"></h1>
+<label data-i18n="name"></label><input id="n"><label data-i18n="shopName"></label><input id="s"><label data-i18n="city"></label><input id="c">
+<label data-i18n="email"></label><input id="e" type="email"><label data-i18n="password"></label><input id="p" type="password">
+<button class="btn" style="width:100%" id="go" data-i18n="register"></button><p class="center"><a href="login.html" data-i18n="haveAcc"></a></p></div></div>
+<script src="app.js"></script><script>miniBar();
+go.onclick=async()=>{try{saveSession(await api('/auth/register',{name:n.value,shopName:s.value,city:c.value,email:e.value,password:p.value}));location='dashboard.html'}catch(x){toast(x.message,1)}}</script></body></html>

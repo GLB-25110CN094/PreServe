@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PreServe</title><link rel="stylesheet" href="style.css"></head><body><main><h1 data-i18n="d_title"></h1><p class="mut" data-i18n="d_sub"></p><div id="msg" class="rec warn"></div>
+<div class="grid g4" id="stats"></div><br><div class="grid g2"><div class="card"><h2 data-i18n="d_dist"></h2><canvas id="ch"></canvas></div>
+<div class="card"><h2 data-i18n="d_top"></h2><div class="wrap"><table id="topT"></table></div></div></div><br>
+<div class="card"><h2 data-i18n="d_reorder"></h2><div class="wrap"><table id="re"></table></div></div></main><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script><script>
+if(shell('dashboard'))(async()=>{const d=await api('/dashboard?shopId='+shopId());let chart;
+msg.textContent=d.atRisk>0?t('d_msg',{n:d.atRisk}):t('d_ok');if(!d.atRisk)msg.className='rec';
+const S=[['s_products',d.products],['s_units',d.stockUnits.toLocaleString()],['s_value',money(d.stockValue)],['s_var',money(d.valueAtRisk)],['s_risky',d.atRisk],['s_active',d.activeActions]];
+stats.innerHTML=S.map(x=>'<div class="card stat"><b>'+x[1]+'</b><span data-i18n="'+x[0]+'"></span></div>').join('');
+topT.innerHTML='<tr><th data-i18n="nav_inventory"></th><th data-i18n="i_leftover"></th><th data-i18n="s_var"></th><th data-i18n="i_risk"></th></tr>'+d.top.map(a=>'<tr><td><a href="product.html?id='+a.id+'">'+esc(a.name)+'</a></td><td>'+a.leftover+'</td><td>'+money(a.valueAtRisk)+'</td><td>'+badge(a.risk)+'</td></tr>').join('');
+re.innerHTML=d.reorder.length?'<tr><th data-i18n="nav_inventory"></th><th data-i18n="i_stock"></th><th data-i18n="i_sell"></th><th></th></tr>'+d.reorder.map(a=>'<tr><td><a href="product.html?id='+a.id+'">'+esc(a.name)+'</a></td><td>'+a.stock+'</td><td>'+a.sellOutDays+' '+t('days')+'</td><td>'+recsHtml(a.recs.filter(r=>r.code.startsWith('REORDER')))+'</td></tr>').join(''):'<tr><td data-i18n="d_noreorder"></td></tr>';
+function draw(){if(chart)chart.destroy();const k=['LOW','MEDIUM','HIGH','VERY_HIGH','NONE'];chart=new Chart(ch,{type:'doughnut',data:{labels:k.map(x=>t(x)),datasets:[{data:k.map(x=>d.counts[x]),backgroundColor:['#2e9e5b','#e3b505','#ef8a17','#d93636','#8a8f8c'],borderColor:css('--card')}]},options:{plugins:{legend:{labels:{color:css('--tx')}}}}})}
+draw();window.onTheme=draw;applyI18n()})().catch(e=>toast(e.message,1))</script></body></html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PreServe</title><link rel="stylesheet" href="style.css"></head><body><main><div id="hd"></div><div class="grid g4" id="st"></div><br><div class="grid g2"><div class="card"><h2 data-i18n="p_fore"></h2><canvas id="c1"></canvas></div>
+<div class="card"><h2 data-i18n="p_month"></h2><canvas id="c2"></canvas></div></div><br>
+<div class="grid g2"><div class="card"><h2 data-i18n="p_recs"></h2><div id="rc"></div><div id="nx"></div></div><div class="card"><div id="inf"></div><h2 data-i18n="p_batches"></h2><table id="bt"></table></div></div></main><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script><script>
+let A,c1,c2;const id=new URLSearchParams(location.search).get('id');
+function draw(){[c1,c2].forEach(c=>c&&c.destroy());const tx=css('--tx'),gr=css('--bd');
+const h=A.history,f=A.forecast;const labels=h.map(x=>x.date.slice(5)).concat(f.map(x=>x.date.slice(5)));
+c1=new Chart(document.getElementById('c1'),{type:'line',data:{labels,datasets:[{label:t('p_hist'),data:h.map(x=>x.units).concat(f.map(()=>null)),borderColor:'#3b82f6',tension:.3,pointRadius:0},{label:t('p_fc'),data:h.map(()=>null).concat(f.map(x=>x.units)),borderColor:'#1f8a4c',borderDash:[6,4],tension:.3,pointRadius:0}]},options:{scales:{x:{ticks:{color:tx,maxTicksLimit:8},grid:{color:gr}},y:{ticks:{color:tx},grid:{color:gr},beginAtZero:true}},plugins:{legend:{labels:{color:tx}}}}});
+c2=new Chart(document.getElementById('c2'),{type:'bar',data:{labels:A.monthly.map(x=>x.month),datasets:[{label:'avg/day',data:A.monthly.map(x=>x.avgDaily),backgroundColor:'#8b5cf6'}]},options:{scales:{x:{ticks:{color:tx},grid:{color:gr}},y:{ticks:{color:tx},grid:{color:gr},beginAtZero:true}},plugins:{legend:{display:false}}}})}
+async function load(){A=await api('/products/'+id);
+hd.innerHTML='<a href="inventory.html">← '+t('nav_inventory')+'</a><h1>'+esc(A.name)+' '+badge(A.risk)+'</h1><p class="mut">'+catName(A.category)+' · ₹'+A.price+'</p>';
+const S=[['i_stock',A.stock],['p_waste',A.wasteProb+'%'],['p_score',A.riskScore+'%'],['p_exp',A.expectedSales],['p_left',A.leftover],['i_avg',A.avgDaily]];
+st.innerHTML=S.map(x=>'<div class="card stat"><b>'+x[1]+'</b><span data-i18n="'+x[0]+'"></span></div>').join('');
+rc.innerHTML=recsHtml(A.recs);
+const ly=A.lastYear.available?A.lastYear.prevAvg+' → '+A.lastYear.nextAvg+' /'+t('day',{n:''}).trim():t('p_lyna');
+inf.innerHTML='<p><b>'+t('p_trend')+':</b> '+t('TREND_'+A.trend)+'<br><b>'+t('p_basis')+':</b> '+t('BASIS_'+A.basis)+'<br><b>'+t('p_promo')+':</b> ×'+A.promoUplift+'<br><b>'+t('p_ly')+':</b> '+ly+'<br><b>'+t('i_next3')+':</b> '+A.next3.join(', ')+'</p>';
+bt.innerHTML='<tr><th data-i18n="i_qty"></th><th data-i18n="p_expiry"></th><th data-i18n="i_left"></th><th data-i18n="i_leftover"></th></tr>'+A.batches.map(b=>'<tr><td>'+b.remaining+'</td><td>'+b.expiry+'</td><td>'+b.daysLeft+'</td><td>'+b.predictedLeftover+'</td></tr>').join('');
+const types=['DISCOUNT','PROMOTION','BUNDLE','VISIBILITY','TRANSFER'];
+nx.innerHTML='<h2 data-i18n="p_start"></h2><div class="row"><select id="at">'+types.map(x=>'<option value="'+x+'">'+t(x)+'</option>').join('')+'</select><input id="ad" type="number" min="0" max="90" style="width:110px" value="'+A.suggestedDiscount+'" title="'+t('p_disc')+'"><button class="btn" id="ag" data-i18n="save"></button></div>';
+ag.onclick=async()=>{try{await api('/interventions',{productId:+id,type:at.value,discountPct:ad.value});toast('✓');location='actions.html'}catch(x){toast(x.message,1)}};
+draw();applyI18n()}
+if(shell('inventory')){window.onTheme=()=>A&&draw();load().catch(e=>toast(e.message,1))}</script></body></html>

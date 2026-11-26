@@ -1,0 +1,6 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PreServe</title><link rel="stylesheet" href="style.css"></head><body><div class="auth"><div class="card"><h1>🌿 <span data-i18n="app"></span></h1><p class="mut" data-i18n="tag"></p>
+<label data-i18n="email"></label><input id="e" type="email" value="demo@preserve.com"><label data-i18n="password"></label><input id="p" type="password" value="demo123">
+<button class="btn" style="width:100%" id="go" data-i18n="login"></button><p class="center"><a href="register.html" data-i18n="noAcc"></a></p><p class="center mut" data-i18n="demo"></p></div></div>
+<script src="app.js"></script><script>miniBar();
+go.onclick=async()=>{try{saveSession(await api('/auth/login',{email:e.value,password:p.value}));location='dashboard.html'}catch(x){toast(x.message,1)}};
+p.onkeydown=e=>{if(e.key==='Enter')go.click()}</script></body></html>
